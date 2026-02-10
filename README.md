@@ -1,4 +1,4 @@
-# 🌐 Portfolio Moderne — Développeur Web & Data Engineer
+#  Portfolio Moderne — Développeur Web & Data Engineer
 
 Un portfolio professionnel conçu pour séduire les recruteurs et mettre en avant vos compétences en développement web et data engineering.
 
