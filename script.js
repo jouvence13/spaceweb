@@ -92,6 +92,26 @@ function typeLoop() {
   
   if (typeIndex <= typingText.length) {
     setTimeout(typeLoop, 50); // Plus rapide
+  } else {
+    // Attendre 2 secondes puis effacer et recommencer
+    setTimeout(() => {
+      eraseLoop();
+    }, 2000);
+  }
+}
+
+// Animation d'effacement
+function eraseLoop() {
+  typingEl.textContent = typingText.slice(0, typeIndex--);
+  
+  if (typeIndex > 0) {
+    setTimeout(eraseLoop, 30); // Plus rapide pour effacer
+  } else {
+    // Recommencer l'animation après une courte pause
+    setTimeout(() => {
+      typeIndex = 0;
+      typeLoop();
+    }, 500);
   }
 }
 
@@ -437,7 +457,6 @@ async function loadGithubProjects() {
     // Réattacher les event listeners
     attachProjectListeners();
     
-    showToast(` ${filteredRepos.length} projets chargés depuis GitHub`);
     btn.textContent = '✓ Projets chargés';
     
   } catch (error) {

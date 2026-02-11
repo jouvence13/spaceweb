@@ -1366,4 +1366,9 @@ img {
     width: 28px;
     height: 28px;
   }
+
+  /* Réduire la taille des titres de section en mobile */
+  .section__head h3 {
+    font-size: 1.5rem;
+  }
 }
