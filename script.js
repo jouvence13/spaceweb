@@ -35,18 +35,68 @@ qsa(".nav__link").forEach((link) =>
   link.addEventListener("click", () => navLinks.classList.remove("open"))
 );
 
-// Typing effect
+// Typing effect avec son
+const typingNameEl = qs("#typingName");
 const typingEl = qs("#typing");
+const nameText = "AKODE Jouvence";
 const typingText = "Développeur Web | Front-end & Back-end";
+let nameIndex = 0;
 let typeIndex = 0;
 
-function typeLoop() {
-  typingEl.textContent = typingText.slice(0, typeIndex++);
-  if (typeIndex <= typingText.length) {
-    setTimeout(typeLoop, 40);
+// Créer le contexte audio pour le son de typing
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+function playTypeSound() {
+  const oscillator = audioContext.createOscillator();
+  const gainNode = audioContext.createGain();
+  
+  oscillator.connect(gainNode);
+  gainNode.connect(audioContext.destination);
+  
+  // Son court et discret de frappe de clavier
+  oscillator.frequency.value = 800;
+  oscillator.type = 'sine';
+  
+  gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+  gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+  
+  oscillator.start(audioContext.currentTime);
+  oscillator.stop(audioContext.currentTime + 0.05);
+}
+
+// Animation du nom
+function typeNameLoop() {
+  typingNameEl.textContent = nameText.slice(0, nameIndex++);
+  
+  // Jouer le son uniquement pour les lettres (pas les espaces)
+  if (nameText[nameIndex - 1] && nameText[nameIndex - 1] !== ' ') {
+    playTypeSound();
+  }
+  
+  if (nameIndex <= nameText.length) {
+    setTimeout(typeNameLoop, 50); // Plus rapide
+  } else {
+    // Démarrer l'animation du sous-titre après le nom
+    setTimeout(typeLoop, 200);
   }
 }
-setTimeout(typeLoop, 400);
+
+// Animation du sous-titre
+function typeLoop() {
+  typingEl.textContent = typingText.slice(0, typeIndex++);
+  
+  // Jouer le son uniquement pour les lettres (pas les espaces)
+  if (typingText[typeIndex - 1] && typingText[typeIndex - 1] !== ' ') {
+    playTypeSound();
+  }
+  
+  if (typeIndex <= typingText.length) {
+    setTimeout(typeLoop, 50); // Plus rapide
+  }
+}
+
+// Démarrer l'animation du nom
+setTimeout(typeNameLoop, 400);
 
 // Parallax hero
 const orb = qs(".orb");
